@@ -32,7 +32,7 @@ public abstract class PressableWidgetMixin extends ClickableWidgetMixin {
 
 	@ModifyArg(method = "extractDefaultLabel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/AbstractButton;extractScrollingStringOverContents(Lnet/minecraft/client/gui/ActiveTextCollector;Lnet/minecraft/network/chat/Component;I)V"), index = 1)
 	private Component modifyTextColor(Component text) {
-		int baseColor = this.active ? (this.isHovered ? 0xFFFFA0 : 0xE0E0E0) : 0xA0A0A0;
+		int baseColor = this.active ? (this.isHovered ? 0xFFFFA0 : 0xFFFFFF) : 0xA0A0A0; // Pre-1.15 inactive color is 0xE0E0E0
 		int colorWithAlpha = baseColor | (Mth.ceil(this.alpha * 255.0F) << 24);
 
 		return ComponentUtils.mergeStyles(text, Style.EMPTY.withColor(colorWithAlpha));
