@@ -18,24 +18,24 @@
  */
 package wtf.cheeze.yellowtext.mixin;
 
-import net.minecraft.client.gui.widget.PressableWidget;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.Texts;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Mixin(PressableWidget.class)
+@Mixin(AbstractButton.class)
 public abstract class PressableWidgetMixin extends ClickableWidgetMixin {
 
-	@ModifyArg(method = "drawLabel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/PressableWidget;drawTextWithMargin(Lnet/minecraft/client/font/DrawnTextConsumer;Lnet/minecraft/text/Text;I)V"), index = 1)
-	private Text modifyTextColor(Text text) {
-		int baseColor = this.active ? (this.hovered ? 0xFFFFA0 : 0xFFFFFF) : 0xA0A0A0;
-		int colorWithAlpha = baseColor | (MathHelper.ceil(this.alpha * 255.0F) << 24);
+	@ModifyArg(method = "extractDefaultLabel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/AbstractButton;extractScrollingStringOverContents(Lnet/minecraft/client/gui/ActiveTextCollector;Lnet/minecraft/network/chat/Component;I)V"), index = 1)
+	private Component modifyTextColor(Component text) {
+		int baseColor = this.active ? (this.isHovered ? 0xFFFFA0 : 0xE0E0E0) : 0xA0A0A0;
+		int colorWithAlpha = baseColor | (Mth.ceil(this.alpha * 255.0F) << 24);
 
-		return Texts.withStyle(text, Style.EMPTY.withColor(colorWithAlpha));
+		return ComponentUtils.mergeStyles(text, Style.EMPTY.withColor(colorWithAlpha));
 	}
 
 }

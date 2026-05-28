@@ -18,24 +18,24 @@
  */
 package wtf.cheeze.yellowtext.mixin;
 
-import net.minecraft.client.gui.widget.SliderWidget;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.Texts;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Mixin(SliderWidget.class)
+@Mixin(AbstractSliderButton.class)
 public abstract class SliderWidgetMixin extends ClickableWidgetMixin {
 
-    @ModifyArg(method = "renderWidget", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/SliderWidget;drawTextWithMargin(Lnet/minecraft/client/font/DrawnTextConsumer;Lnet/minecraft/text/Text;I)V"), index = 1)
-    private Text modifyTextColor(Text text) {
-        int baseColor = this.active ? (this.hovered ? 0xFFFFA0 : 16777215) : 10526880;
-        int colorWithAlpha = baseColor | (MathHelper.ceil(this.alpha * 255.0F) << 24);
+    @ModifyArg(method = "extractWidget", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/AbstractSliderButton;extractScrollingStringOverContents(Lnet/minecraft/client/gui/ActiveTextCollector;Lnet/minecraft/network/chat/Component;I)V"), index = 1)
+    private Component modifyTextColor(Component text) {
+        int baseColor = this.active ? (this.isHovered ? 0xFFFFA0 : 16777215) : 10526880;
+        int colorWithAlpha = baseColor | (Mth.ceil(this.alpha * 255.0F) << 24);
 
-        return Texts.withStyle(text, Style.EMPTY.withColor(colorWithAlpha));
+        return ComponentUtils.mergeStyles(text, Style.EMPTY.withColor(colorWithAlpha));
     }
 
 }

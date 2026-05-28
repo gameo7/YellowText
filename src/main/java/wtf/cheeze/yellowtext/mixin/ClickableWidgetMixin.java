@@ -18,11 +18,11 @@
  */
 package wtf.cheeze.yellowtext.mixin;
 
-import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.client.gui.components.AbstractWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(ClickableWidget.class)
+@Mixin(AbstractWidget.class)
 public abstract class ClickableWidgetMixin {
 
 	@Shadow
@@ -32,6 +32,6 @@ public abstract class ClickableWidgetMixin {
 	protected float alpha;
 
 	@Shadow
-	protected boolean hovered;
+	protected boolean isHovered;
 
 }
