@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(AbstractSliderButton.class)
 public abstract class SliderWidgetMixin extends ClickableWidgetMixin {
 
-    @ModifyArg(method = "extractWidget", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/AbstractSliderButton;extractScrollingStringOverContents(Lnet/minecraft/client/gui/ActiveTextCollector;Lnet/minecraft/network/chat/Component;I)V"), index = 1)
+    @ModifyArg(method = "extractWidgetRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/AbstractSliderButton;extractScrollingStringOverContents(Lnet/minecraft/client/gui/ActiveTextCollector;Lnet/minecraft/network/chat/Component;I)V"), index = 1)
     private Component modifyTextColor(Component text) {
         int baseColor = this.active ? (this.isHovered ? 0xFFFFA0 : 16777215) : 10526880;
         int colorWithAlpha = baseColor | (Mth.ceil(this.alpha * 255.0F) << 24);
